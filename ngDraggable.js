@@ -1,6 +1,6 @@
 /*
  *
- * https://github.com/fatlinesofcode/ngDraggable
+ * https://github.com/bisol/ngDraggable
  */
 angular.module("ngDraggable", [])
     .service('ngDraggable', [function() {
@@ -45,6 +45,21 @@ angular.module("ngDraggable", [])
                 var onDragStopCallback = $parse(attrs.ngDragStop) || null;
                 var onDragSuccessCallback = $parse(attrs.ngDragSuccess) || null;
                 var allowTransform = angular.isDefined(attrs.allowTransform) ? scope.$eval(attrs.allowTransform) : true;
+
+                var disableOverflowY = angular.isDefined(attrs.ngDragDisableOverflowY) ? scope.$eval(attrs.ngDragDisableOverflowY) : false;
+                var elementsWithStyleOverride = []
+                if(disableOverflowY){
+                    var cur = element[0]
+                    while(cur.parentElement != null){
+                        var cur = cur.parentElement;
+                        if(cur.style.overflowY != 'initial'){
+                            elementsWithStyleOverride.push({
+                                element: cur, 
+                                originalValue: cur.style.overflowY 
+                            });
+                        }
+                    }
+                }
 
                 var getDragData = $parse(attrs.ngDragData);
 
@@ -180,6 +195,10 @@ angular.module("ngDraggable", [])
                     if (!_dragEnabled)return;
                     evt.preventDefault();
 
+                    angular.forEach(elementsWithStyleOverride, function(styleOverride){
+                        styleOverride.element.style.overflowY = 'initial';
+                    })
+
                     if (!element.hasClass('dragging')) {
                         _data = getDragData(scope);
                         element.addClass('dragging');
@@ -212,6 +231,11 @@ angular.module("ngDraggable", [])
                     if (!_dragEnabled)
                         return;
                     evt.preventDefault();
+
+                    angular.forEach(elementsWithStyleOverride, function(styleOverride){
+                        styleOverride.element.style.overflowY = styleOverride.originalValue;
+                    })
+
                     $rootScope.$broadcast('draggable:end', {x:_mx, y:_my, tx:_tx, ty:_ty, event:evt, element:element, data:_data, callback:onDragComplete, uid: _myid});
                     element.removeClass('dragging');
                     element.parent().find('.drag-enter').removeClass('drag-enter');

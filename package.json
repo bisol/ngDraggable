@@ -1,0 +1,26 @@
+{
+  "name": "hlfs-ng-draggable",
+  "version": "1.0.1",
+  "description": "drag and drop directive for angularjs",
+  "main": "ngDraggable.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bisol/ngDraggable.git"
+  },
+  "keywords": [
+    "angular",
+    "angularjs",
+    "drag",
+    "draggable",
+    "drad and drop"
+  ],
+  "author": "bruno.bisol@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bisol/ngDraggable/issues"
+  },
+  "homepage": "https://github.com/bisol/ngDraggable#readme"
+}

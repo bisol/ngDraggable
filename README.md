@@ -24,7 +24,7 @@ angular.module('app', ['ngDraggable']);
 
 Draggable usage:
 ```html
-<div ng-drag="true" ng-drag-data="{obj}" ng-drag-success="onDragComplete($data,$event)" ng-center-anchor="true">
+<div ng-drag="true" ng-drag-data="{obj}" ng-drag-success="onDragComplete($data,$event)" ng-center-anchor="true" ng-drag-disable-overflow-y="true">
   Draggable div
 </div>
 ```
@@ -32,6 +32,7 @@ Draggable usage:
 * `ng-center-anchor` is optional. If not specified, it defaults to false.
 * If the draggable is also clickable (ng-click, ng-dblclick) the script wont react.
 * You can define a drag-button as child with the attribute `ng-drag-handle`.
+* If ```ng-drag-disable-overflow-y``` is ```true```, the directive will disable ```overflow-y``` on parent elements
 
 ```ng-drag-start``` and ```ng-drag-move``` is also available. Add to the ng-drop element.
 ``ng-drag-stop`` can be used when you want to react to the user dragging an item and it wasn't dropped into the target container.
