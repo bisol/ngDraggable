@@ -30,6 +30,8 @@ angular.module("ngDraggable", [])
                 var _moveEvents = 'touchmove mousemove';
                 var _releaseEvents = 'touchend mouseup';
                 var _dragHandle;
+                var _originalPosition = element[0].style.position
+                var _originalPositionTop = element[0].style.top
 
                 // to identify the element in order to prevent getting superflous events when a single element has both drag and drop directives on it.
                 var _myid = scope.$id;
@@ -133,6 +135,11 @@ angular.module("ngDraggable", [])
                         return;
                     }
 
+                    element.css({
+                        position : 'absolute',
+                        top : evt.clientY + 'px'
+                    })
+
                     if(_hasTouch){
                         cancelPress();
                         _pressTimer = setTimeout(function(){
@@ -195,10 +202,6 @@ angular.module("ngDraggable", [])
                     if (!_dragEnabled)return;
                     evt.preventDefault();
 
-                    angular.forEach(elementsWithStyleOverride, function(styleOverride){
-                        styleOverride.element.style.overflowY = 'initial';
-                    })
-
                     if (!element.hasClass('dragging')) {
                         _data = getDragData(scope);
                         element.addClass('dragging');
@@ -232,8 +235,9 @@ angular.module("ngDraggable", [])
                         return;
                     evt.preventDefault();
 
-                    angular.forEach(elementsWithStyleOverride, function(styleOverride){
-                        styleOverride.element.style.overflowY = styleOverride.originalValue;
+                    element.css({
+                        position : _originalPosition,
+                        top : _originalPositionTop
                     })
 
                     $rootScope.$broadcast('draggable:end', {x:_mx, y:_my, tx:_tx, ty:_ty, event:evt, element:element, data:_data, callback:onDragComplete, uid: _myid});
